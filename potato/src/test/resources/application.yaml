@@ -1,0 +1,65 @@
+# src/test? ??? ??? ???? ?????
+# test ?? ??? resources?? properties? yaml? ???
+# src/main/resources? ??? ??? ????.
+
+# ??! ???? ??? application-xxx.properties ? ???? ??
+# application.properties? ????.
+# ???? oauth ?? ??? ?? ??? ?????.
+
+jwt:
+  key: potatoSecretKeypotatoSecretKeypotatoSecretKeypotatoSecretKey
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://potato-springboot2-webservice.c3266kqoia2r.ap-northeast-2.rds.amazonaws.com:5432/potato_springboot2_webservice
+    username: potato_company
+    password: galaxy1q2w#e$r
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolsize: 10
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: com.tft.potato.config.PostgreSQLCustomDialect
+        connection:
+          handling_mode: DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION
+          #provider_disables_autocommit: true
+          provider_disables_autocommit: false # ? ????? jparepo save? ????? ???
+        default_batch_fetch_size: 100
+        show_sql: true
+        format_sql: true
+        #generate_statistics: true
+        jdbc:
+          batch_size: 10000
+        order_inserts: true
+        order_updates: true
+    generate-ddl: false
+#  jpa:
+#    show_sql : true
+#    properties:
+#      hibernate:
+#        dialect: com.tft.potato.config.PostgreSQLCustomDialect
+#  h2:
+#    console:
+#      enable: true
+  #session:
+    #store-type: jdbc
+
+# Oauth Test? properties
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: profile,email
+

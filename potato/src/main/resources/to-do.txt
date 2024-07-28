@@ -1,0 +1,13 @@
+1. custom login success handler로 로그인 후 응답 주기
+ - redis 적용해야함.
+2. login failure 핸들러
+
+3. logout 프로세스
+
+4. 시큐리티 테스트 코드 작성
+
+(네이버 로그인도 붙이기)
+
+5. aws에 소스올리고 배포
+
+

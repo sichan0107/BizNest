@@ -1,0 +1,40 @@
+# 구글 (RS256)
+김문기 accessToken
+ya29.a0AXooCgsShV98l2AMeUvMJtzAblnlwTJh_0ekGb3sTJNY-6UrJ6eW981BXtANPGQlT27XPPC0D1Aow279nY1BYj3rBV-d4rgvomeDbswlLzs1Lk6o0YLnATk-PGCwUWyerEywCo8UrmYUOt32AmYfLJZ9sEKCbF1KZ2e_aCgYKAXYSARMSFQHGX2MizAgM7H9hbKw5xeLlSfRDdQ0171
+
+김문기 refreshToken
+1//0eddPEUzhoqzDCgYIARAAGA4SNwF-L9IrNi6CpbMlG_KjsdnO7jEIWYDqEp-VssylhGw78Hb3ggf9-mUUvCxCeJ2am6fIMekoYhk
+
+김문기 idToken
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjY3MTk2NzgzNTFhNWZhZWRjMmU3MDI3NGJiZWE2MmRhMmE4YzRhMTIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiI0OTc3MjU2NTQxMjItbTBvNmZzYXI1YmVkN2Zlbmt1azhoN3JrYW84ZjlwZzQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiI0OTc3MjU2NTQxMjItbTBvNmZzYXI1YmVkN2Zlbmt1azhoN3JrYW84ZjlwZzQuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDM5Mzc2ODQ1NjExMjg5NDQxODkiLCJoZCI6ImF1dG93aW5pLmNvbSIsImVtYWlsIjoibWcua2ltQGF1dG93aW5pLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiTUtWdm5IXzNULWtHS1lvUHFlWkt4QSIsIm5vbmNlIjoiM3o4YlNXbWNGSmxFWEpiNGNoZks2aENBaGRERXZFR3RNMC1maGhPbGxzVSIsIm5hbWUiOiLquYDrrLjquLAiLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSTEyTVpOT0R1Q25qSF9saXZGNnF4czJzd0VtQl9uUzBjUnFHUGRvVGZldThDYTdBPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6IuusuOq4sCIsImZhbWlseV9uYW1lIjoi6rmAIiwiaWF0IjoxNzE2ODc3ODAxLCJleHAiOjE3MTY4ODE0MDF9.Vm3qjUIwypdmqqQwrqcF2-JGUOYvv81opohf1H9j1MtPr_cc_UqX3nuLrY5UDF6YlkTksnrz_HpQ5fdYQWONj3fpBhSMYuYCDGZGGKifSN0Wrb1ob66ZE8S11Gsj1XK2jXVz66n9i3WIO4SrIn3KvGfgxgpD0k-rlwOec8jZJQzTp89kpsdFf2X4KMZsNBf4uHGbP69QB0BIa-DjK2ef_fwdjFEekAxTcoEP3X_XnbZ4049lsuEwF24XAGpeq-0YtorkS0o91Vay0DHQolaLuw_lOIMAlGpQOPhf_ZEzi50XRagSKB7rAz-X2l5dtDIyrcP71QHvy0DUk5Hy6dO8cw
+
+
+# 네이버
+<accessToken>
+AAAAPsaRostYZUjFv_uVt35HIWjeZt8AnPzGVQ7-P5EQi2m44jdIvfMrUuZsX6NisDD5S8axg2MFdZ7v_QWNQ8frWBM
+
+<refreshToken>
+3qAexmisapugisNDcOdjmWXhew8jbyGxEJqZHsG836N28AtCy52MQdSPemsFxpDlxUCpTQG2msyJGovP3eZGqFZIJ5ruHehnb5WHEn4M06TBOVfwMI8PASZpFtxpfgQ34a
+
+
+
+
+구글 idToken 내용
+
+{
+  "iss": "https://accounts.google.com",
+  "azp": "497725654122-m0o6fsar5bed7fenkuk8h7rkao8f9pg4.apps.googleusercontent.com",
+  "aud": "497725654122-m0o6fsar5bed7fenkuk8h7rkao8f9pg4.apps.googleusercontent.com",
+  "sub": "103937684561128944189",
+  "hd": "autowini.com",
+  "email": "mg.kim@autowini.com",
+  "email_verified": true,
+  "at_hash": "7zd47rXboD1MbbeIt0jRfg",
+  "nonce": "6eTYW0dR0asCy4Bwp2IC-8PMPOa5iCFUsarf6IOkXgQ",
+  "name": "김문기",
+  "picture": "https://lh3.googleusercontent.com/a/ACg8ocI12MZNODuCnjH_livF6qxs2swEmB_nS0cRqGPdoTfeu8Ca7A=s96-c",
+  "given_name": "문기",
+  "family_name": "김",
+  "iat": 1716107869,
+  "exp": 1716111469
+}
