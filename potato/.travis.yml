@@ -6,6 +6,9 @@ branches:
   only:
     - master
 
+before_install:
+  - chmod +x mvn
+
 # Travis CI가 Maven을 사용하여 프로젝트를 빌드하도록 설정
 script:
   - mvn clean install
@@ -13,7 +16,7 @@ script:
 # 빌드 캐시를 활성화하여 빌드 속도 개선
 cache:
   directories:
-    - $HOME/.m2/repository
+    - $HOME/.m2
 
 # 알림 설정
 notifications:
