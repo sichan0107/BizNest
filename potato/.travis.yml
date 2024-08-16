@@ -4,7 +4,7 @@ jdk:
 
 branches:
   only:
-    - main
+    - master
 
 # Travis CI가 Maven을 사용하여 프로젝트를 빌드하도록 설정
 script:
