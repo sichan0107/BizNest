@@ -8,7 +8,6 @@ branches:
     -
 # 특정 조건 일 경우는 이렇게
 
-      
 #if: branch = main AND type = push
 
 before_install:
