@@ -5,13 +5,13 @@ jdk:
 branches:
   only:
     - main
-    -
+  
 # 특정 조건 일 경우는 이렇게
 
 #if: branch = main AND type = push
 
-before_install:
-  - chmod +x mvn
+#before_install:
+#  - chmod +x mvn
 
 # Travis CI가 Maven을 사용하여 프로젝트를 빌드하도록 설정
 script:
