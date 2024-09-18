@@ -1,0 +1,15 @@
+spring:
+#  profiles:
+  #  session:
+  #    store-type: jdbc
+  #    jdbc:
+  #      initialize-schema: always
+  #      schema: classpath:org/springframework/session/jdbc/schema-postgresql.sql
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://potato-springboot2-webservice.c3266kqoia2r.ap-northeast-2.rds.amazonaws.com:5432/potato_springboot2_webservice
+    username: potato_company
+    password: galaxy1q2w#e$r
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolsize: 10
