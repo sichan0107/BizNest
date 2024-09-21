@@ -24,6 +24,8 @@ public enum ErrorEnum {
         Description : 서버에 요청이 전달되었지만, 권한 때문에 거절된 상태입니다.
      */
 
+    ACCESS_DENIED(-200, "Access Denied. Please retry login."),
+
     /*
         Error : 429 Too Many Request (쿼터 초과)
         Description : 정해진 사용량이나 초당 요청 한도를 초과한 경우
@@ -59,4 +61,6 @@ public enum ErrorEnum {
     public String getMessage() {
         return message;
     }
+
+
 }
