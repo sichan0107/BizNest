@@ -20,6 +20,10 @@ public class SkipPathList extends ArrayList<String> {
         //this.add("/aws/**");
         //this.add("/posts/**");
 
+        // aspect test
+        this.add("/user/info");
+        this.add("/user/greeting");
+
 
         // web static resource
         this.add("/css/**");

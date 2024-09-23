@@ -14,17 +14,17 @@ public class UserRestController {
 
     private final UserService userService;
 
-//    @GetMapping("/{email}")
-//    public ResponseEntity<User> searchUser(@PathVariable String email){
-//        User user = userService.getUserByEmail(email);
-//
-//        return new ResponseEntity<>(user, HttpStatus.OK);
-//    }
+    @GetMapping("/info")
+    public ResponseEntity<User> searchUser(@RequestParam("email") String email){
+        User user = userService.getUserByEmail(email);
 
-    @PostMapping("/info")
-    public ResponseEntity<User> searchUser(@RequestBody String email){
-        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
+//    @PostMapping("/info")
+//    public ResponseEntity<User> searchUser(@RequestBody String email){
+//        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
+//    }
 
     @GetMapping("/greeting")
     public String greeting(){

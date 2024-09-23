@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 import java.util.List;
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -43,6 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers(skipPathList.toArray(new String[0])).permitAll()
+                .antMatchers("/user/greeting").permitAll()
                 .anyRequest().authenticated()
 
                 .and()
