@@ -33,6 +33,11 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final UserService userService;
 
+
+/*
+    소셜로그인 방식 참고 : https://hoons-dev.tistory.com/141
+ */
+
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String successLogin = "N";
         String loginResponseJsonTxt = "";
@@ -53,6 +58,8 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
                 accessToken = jwtProvider.generateAccessToken(authentication);
                 refreshToken = jwtProvider.generateRefreshToken(authentication, accessToken);
                 successLogin = "Y";
+
+
                 log.info("new generated accesstoken : {}", accessToken);
 
             }else{
