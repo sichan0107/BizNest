@@ -7,14 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("user")
 @RequiredArgsConstructor
 
 public class UserRestController {
 
     private final UserService userService;
 
-    @GetMapping("/userinfo")
+    @GetMapping("info")
     public ResponseEntity<User> searchUser(@RequestParam("email") String email){
         User user = userService.getUserByEmail(email);
 
@@ -26,7 +26,7 @@ public class UserRestController {
 //        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
 //    }
 
-    @GetMapping("/greeting")
+    @GetMapping("/health")
     public String greeting(){
         return "hello";
     }
