@@ -20,7 +20,8 @@ public class SkipPathList {
                 // tests
                 ,"/aopLogTest"
                 ,"/health"
-                ,"/api/user/info"
+                ,"/user/info"
+                ,"/user/all"
 
                 // swagger resources
                 ,"/swagger-ui/**"

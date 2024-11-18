@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum ErrorEnum {
 
+    OK(0, "System is OK."),
+
     /*
         Error : 400 Bad Request (일반적인 오류)
         Description : 주로 API에 필요한 필수 파라미터와 관련하여 서버가 클라이언트 오류를 감지해 요청을 처리하지 못한 상태입니다.
@@ -23,6 +25,8 @@ public enum ErrorEnum {
         Error : 403 Forbidden (권한  오류)
         Description : 서버에 요청이 전달되었지만, 권한 때문에 거절된 상태입니다.
      */
+    EXPIRED_REFRESH_TOKEN(-101, "Please retry login."),
+
 
     ACCESS_DENIED(-200, "Access Denied. Please retry login."),
 

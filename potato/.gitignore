@@ -34,3 +34,6 @@ build/
 
 # secure
 application-oauth.yaml
+
+# log file
+/logs

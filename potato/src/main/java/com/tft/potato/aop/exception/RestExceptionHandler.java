@@ -21,7 +21,7 @@ public class RestExceptionHandler {
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<ApiResponse> handleException(Exception ex) {
 
-        int errorCode;
+        int errorCode = ErrorEnum.OK.getStatusCode();
         String errorDescription = "";
         String redirectUrl = "";
         
@@ -35,11 +35,15 @@ public class RestExceptionHandler {
             errorCode = ErrorEnum.UNHANDLED_ERROR.getStatusCode();
             errorDescription = ErrorEnum.UNHANDLED_ERROR.getMessage();
             redirectUrl = REDIRECT_LOGIN;
+        }else if (ex instanceof CustomException) {
+
+            // 커스텀된 예외는 각 에러 코드에 따라 응닶값을 변경해준다.
+            classifyCustomException(ex, errorCode, errorDescription, redirectUrl);
+
         } else {
             errorCode = ErrorEnum.UNHANDLED_ERROR.getStatusCode();
             errorDescription = ErrorEnum.UNHANDLED_ERROR.getMessage();
         }
-
 
         ApiResponse response = ApiResponse.builder()
                 .errorCode(errorCode)
@@ -49,6 +53,42 @@ public class RestExceptionHandler {
                 .build();
 
         return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = { CustomException.class })
+    public ResponseEntity<ApiResponse> handleException(Exception ex) {
+
+        int errorCode = ErrorEnum.OK.getStatusCode();
+        String errorDescription = "";
+        String redirectUrl = "";
+
+        if (ex instanceof CustomException) {
+            // 커스텀된 예외는 각 에러 코드에 따라 응닶값을 변경해준다.
+            classifyCustomException(ex, errorCode, errorDescription, redirectUrl);
+
+        } else {
+            errorCode = ErrorEnum.UNHANDLED_ERROR.getStatusCode();
+            errorDescription = ErrorEnum.UNHANDLED_ERROR.getMessage();
+        }
+
+        ApiResponse response = ApiResponse.builder()
+                .errorCode(errorCode)
+                .errorDescription(errorDescription)
+                .exceptionMessage(ex.getMessage())
+                .redirectUrl(redirectUrl)
+                .build();
+
+        return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+    }
+
+    private void classifyCustomException(CustomException ex, int errorCode, String errorDes, String redirectUrl){
+        // Refesh Token이 만료되었다면 403으로 재로그인 응답
+        if(ex.getErrorCode() == ErrorEnum.EXPIRED_REFRESH_TOKEN.getStatusCode()){
+            errorCode = ErrorEnum.EXPIRED_REFRESH_TOKEN.getStatusCode();
+            errorDes = ErrorEnum.EXPIRED_REFRESH_TOKEN.getMessage();
+            redirectUrl = REDIRECT_LOGIN;
+        }
+
     }
 
 

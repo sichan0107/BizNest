@@ -1,6 +1,8 @@
 package com.tft.potato.config.security.provider;
 
 import antlr.TokenStreamException;
+import com.tft.potato.aop.exception.CustomException;
+import com.tft.potato.aop.exception.ErrorEnum;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -9,10 +11,12 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -34,6 +38,8 @@ public class JwtProvider {
     private Key key;
     private static final String ClAME_KEY = "auth";
 
+    private final String REDIS_REF_TOKEN_PREFIX = "potato-refresh-user-id : ";
+
 
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30L;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60L * 24 * 7;
@@ -42,6 +48,15 @@ public class JwtProvider {
     @PostConstruct
     public void afterPropertiesSet() {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secretKey));
+    }
+
+
+    public long getRefreshTokenExpireTime(){
+        return REFRESH_TOKEN_EXPIRE_TIME;
+    }
+
+    public String getRefreshTokenPrefix(){
+        return REDIS_REF_TOKEN_PREFIX;
     }
 
     public String generateAccessToken(Authentication authentication) {
@@ -72,39 +87,6 @@ public class JwtProvider {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            // setSigningKey 메소드는 서명을 파싱하고 검증할 때 사용한다.
-            Claims claims = Jwts.parser().setSigningKey(secretKey)
-                         .build()
-                         .parseSignedClaims(token)
-                         .getPayload();
-
-            /*
-            parseSignedClaims() 메소드가 검증하는 부분은 다음과 같다. Claim class는 JWT를 파싱한 결과이다.
-            1. 원래 토큰이 발급된 이후 조작되지 않았는지
-            2. 만료 시간 검증
-            3. 발급 시간 확인
-            4. 유효 시간 확인
-            5. JWT 포맷 확인
-             */
-
-            // verifyWith 메소드는 JWT를 생성할 때 사용할 때 사용한다.
-            //Jwts.parser().verifyWith(secretKey)
-            //             .build()
-            //             .parseSignedClaims(token)
-            //             .getPayload();
-
-            return true;
-
-        } catch (IllegalArgumentException e) {
-            log.error("");
-            return false;
-        } catch (JwtException e){
-            log.error("Error ocuured during validating token. Retry to get new token.");
-            return false;
-        }
-    }
 
     public Authentication getAuthentication(String token) throws TokenStreamException {
         Claims claims = parseClaims(token);
@@ -119,43 +101,36 @@ public class JwtProvider {
         return Collections.singletonList(new SimpleGrantedAuthority(
                 claims.get(ClAME_KEY).toString()));
     }
-//
-//    // 3. accessToken 재발급
-//    public String reissueAccessToken(String accessToken) {
-//        if (StringUtils.hasText(accessToken)) {
-//            Token token = tokenService.findByAccessTokenOrThrow(accessToken);
-//            String refreshToken = token.getRefreshToken();
-//
-//            if (validateToken(refreshToken)) {
-//                String reissueAccessToken = generateAccessToken(getAuthentication(refreshToken));
-//                tokenService.updateToken(reissueAccessToken, token);
-//                return reissueAccessToken;
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public boolean validateToken(String token) {
-//        if (!StringUtils.hasText(token)) {
-//            return false;
-//        }
-//
-//        Claims claims = parseClaims(token);
-//        return claims.getExpiration().after(new Date());
-//    }
-//
-    private Claims parseClaims(String token) throws TokenStreamException{
-        try {
-            //return Jwts.parser().verifyWith(secretKey).build()
-            //        .parseSignedClaims(token).getPayload();
 
+    public boolean validateRefreshToken(String refreshToken) {
+        try {
+            Jwts.parser()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(refreshToken); // 만료되면 ExpiredJwtException 발생
+
+            Claims claims = Jwts.parser().build().parseSignedClaims(refreshToken).getPayload();
+            return true;
+        } catch (ExpiredJwtException e) {
+            log.info("Refresh Token has expired. ");
+            throw new CustomException(ErrorEnum.EXPIRED_REFRESH_TOKEN);
+        } catch (JwtException e) {
+            log.info("Invalid Refresh Token ");
+            throw e;
+        }
+
+    }
+
+    public Claims parseClaims(String token) throws TokenStreamException {
+        try {
             return Jwts.parser().build().parseSignedClaims(token).getPayload();
         } catch (ExpiredJwtException e) {
-            return e.getClaims();
+            log.info("This access token is expired. Start making a new token.");
+            throw e;
         } catch (MalformedJwtException e) {
-            throw new TokenStreamException("This is invalid token : " );
+            throw new TokenStreamException("This is invalid token : " + token, e);
         } catch (SecurityException e) {
-            throw new SecurityException("This signature is invalid");
+            throw new SecurityException("This signature is invalid", e);
         }
     }
 }

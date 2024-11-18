@@ -7,27 +7,34 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("user")
+import java.util.List;
+
+@RestController
 @RequiredArgsConstructor
 
 public class UserRestController {
 
     private final UserService userService;
 
-    @GetMapping("info")
+    @GetMapping("/user/info")
     public ResponseEntity<User> searchUser(@RequestParam("email") String email){
         User user = userService.getUserByEmail(email);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @GetMapping("/user/all")
+    public ResponseEntity<List<User>> searchAllUser(){
+        List<User> userList = userService.getAllUser();
+
+        return new ResponseEntity<>(userList, HttpStatus.OK);
+    }
+
+
 //    @PostMapping("/info")
 //    public ResponseEntity<User> searchUser(@RequestBody String email){
 //        return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.OK);
 //    }
 
-    @GetMapping("/health")
-    public String greeting(){
-        return "hello";
-    }
+
 }

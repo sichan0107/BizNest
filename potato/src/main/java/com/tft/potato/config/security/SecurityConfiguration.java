@@ -6,6 +6,7 @@ import com.tft.potato.config.security.handler.CustomLogoutSuccessHandler;
 import com.tft.potato.config.security.handler.SuccessLoginHandler;
 import com.tft.potato.config.security.provider.JwtProvider;
 import com.tft.potato.config.security.service.CustomOAuth2UserService;
+import com.tft.potato.config.security.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ public class SecurityConfiguration {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final SuccessLoginHandler successLoginHandler;
+    private final TokenService tokenService;
     //private final FailLoginHandler failLoginHandler;
 
 
@@ -36,7 +38,7 @@ public class SecurityConfiguration {
 
     @Bean
     public JwtAuthenticationFilter getJwtAuthenticationFilter() throws Exception{
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(new JwtProvider());
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(new JwtProvider(), tokenService);
         return filter;
     }
 
@@ -53,7 +55,6 @@ public class SecurityConfiguration {
                 .httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers(permitPaths).permitAll()
-                //.antMatchers("/greeting").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

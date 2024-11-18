@@ -2,6 +2,10 @@ package com.tft.potato.config.security.filter;
 
 import antlr.TokenStreamException;
 import com.tft.potato.config.security.provider.JwtProvider;
+import com.tft.potato.config.security.service.TokenService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -20,6 +24,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
+    private final TokenService tokenService;
 
 
     private String resolveToken(HttpServletRequest request) {
@@ -27,19 +32,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return (bearerToken != null && bearerToken.startsWith("Bearer ")) ? bearerToken.substring(7) : null;
     }
 
+    // Access Token 재발급해서 어떻게 보내주어야하나...
+    private void setNewAccessTokenOfRequest(HttpServletRequest request, String newAccessToken){
+        //request.getHeader("Authorization").
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = resolveToken(request); // Request의 Header에서 "Authorization : Beared ~" 부분의 토큰 값을 가져온다.
-        if (token != null && jwtProvider.validateToken(token)) { // Token의 유효성
-            Authentication auth = null;
-            try {
-                auth = jwtProvider.getAuthentication(token);
-            } catch (TokenStreamException e) {
-                log.error("JwtAuthenticationFilter Authentication error : {}", e,toString());
-                throw new RuntimeException(e);
+        String token = resolveToken(request); // Request의 Header에서 "Authorization : Bearer ~" 부분의 토큰 값을 가져온다.
+        Claims claims = null;
+        try{
+
+            if (token != null) { // Token의 유효성
+                claims = jwtProvider.parseClaims(token);
+                Authentication auth = jwtProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        }catch (TokenStreamException e){
+            log.error("JwtAuthenticationFilter Authentication error : {}", e,toString());
+        }catch (ExpiredJwtException e){
+            String newAccessToken = tokenService.reissueAccessToken();
+            response.setHeader("Authorization", newAccessToken);
+        }catch (JwtException | IllegalArgumentException e){
+            request.setAttribute("invalid", true);
         }
+
+
         filterChain.doFilter(request, response);
     }
+
+
 }

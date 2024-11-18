@@ -2,12 +2,15 @@ package com.tft.potato.config.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tft.potato.config.security.provider.JwtProvider;
+import com.tft.potato.config.security.service.TokenService;
 import com.tft.potato.rest.user.dto.LoginResponseDto;
 import com.tft.potato.rest.user.entity.User;
 import com.tft.potato.rest.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.codehaus.plexus.util.StringUtils;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -23,16 +26,14 @@ import java.io.PrintWriter;
 @Component
 @RequiredArgsConstructor
 public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
-    private final String REDIS_REF_TOKEN_PREFIX = "google-refresh-token:";
-    private final String REDIS_ACC_TOKEN_PREFIX = "google-access-token:";
-    private final String REDIS_ID_TOKEN_PREFIX = "google-id-token:";
-
-    //private RedisTemplate redisTemplate = new RedisTemplate();
 
     private final JwtProvider jwtProvider;
 
     private final UserService userService;
 
+    private final RedisTemplate<String, String> redisTemplate;
+
+    private final TokenService tokenService;
 
 /*
     소셜로그인 방식 참고 : https://hoons-dev.tistory.com/141
@@ -55,10 +56,11 @@ public class SuccessLoginHandler extends SimpleUrlAuthenticationSuccessHandler {
         try{
             if(StringUtils.isNotBlank(email)){
                 user = userService.getUserByEmail(email);
-                accessToken = jwtProvider.generateAccessToken(authentication);
+                accessToken = jwtProvider.generateAccessToken(authentication); // client에게 반환
                 refreshToken = jwtProvider.generateRefreshToken(authentication, accessToken);
                 successLogin = "Y";
 
+                tokenService.saveRefreshToken(user.getUserId(), refreshToken);
 
                 log.info("new generated accesstoken : {}", accessToken);
 
