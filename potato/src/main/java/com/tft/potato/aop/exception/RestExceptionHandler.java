@@ -35,12 +35,7 @@ public class RestExceptionHandler {
             errorCode = ErrorEnum.UNHANDLED_ERROR.getStatusCode();
             errorDescription = ErrorEnum.UNHANDLED_ERROR.getMessage();
             redirectUrl = REDIRECT_LOGIN;
-        }else if (ex instanceof CustomException) {
-
-            // 커스텀된 예외는 각 에러 코드에 따라 응닶값을 변경해준다.
-            classifyCustomException(ex, errorCode, errorDescription, redirectUrl);
-
-        } else {
+        }else {
             errorCode = ErrorEnum.UNHANDLED_ERROR.getStatusCode();
             errorDescription = ErrorEnum.UNHANDLED_ERROR.getMessage();
         }
@@ -56,20 +51,13 @@ public class RestExceptionHandler {
     }
 
     @ExceptionHandler(value = { CustomException.class })
-    public ResponseEntity<ApiResponse> handleException(Exception ex) {
+    public ResponseEntity<ApiResponse> handleException(CustomException ex) {
 
         int errorCode = ErrorEnum.OK.getStatusCode();
         String errorDescription = "";
         String redirectUrl = "";
 
-        if (ex instanceof CustomException) {
-            // 커스텀된 예외는 각 에러 코드에 따라 응닶값을 변경해준다.
-            classifyCustomException(ex, errorCode, errorDescription, redirectUrl);
-
-        } else {
-            errorCode = ErrorEnum.UNHANDLED_ERROR.getStatusCode();
-            errorDescription = ErrorEnum.UNHANDLED_ERROR.getMessage();
-        }
+        classifyCustomException(ex, errorCode, errorDescription, redirectUrl);
 
         ApiResponse response = ApiResponse.builder()
                 .errorCode(errorCode)

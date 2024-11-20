@@ -41,7 +41,12 @@ public enum ErrorEnum {
         Description : 서버 에러를 총칭하는 에러 코드로, 요청을 처리하는 과정에서 서버가 예상하지 못한 상황에 놓인 상태입니다.
      */
 
+    NO_SUCH_FILE_ERROR(-300, "This file path is empty. Or it may wrong path."),
+    FILE_DOWNLOAD_ERROR(-301, "An Error occured during downloading a file."),
+    FILE_UPLOAD_ERROR(-302, "An Error occured during uploading a file."),
+
     UNHANDLED_ERROR(-9999, "This is unhandled error.");
+
 
     /*
         Error : 502 Bad Gateway (시스템 오류)

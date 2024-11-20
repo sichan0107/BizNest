@@ -23,6 +23,10 @@ public class SkipPathList {
                 ,"/user/info"
                 ,"/user/all"
 
+                // file tests
+                ,"/file/upload"
+                ,"/file/list"
+
                 // swagger resources
                 ,"/swagger-ui/**"
                 ,"/swagger-resources/**"

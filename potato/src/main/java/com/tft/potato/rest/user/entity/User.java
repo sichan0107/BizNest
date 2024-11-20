@@ -1,7 +1,6 @@
 package com.tft.potato.rest.user.entity;
 
-import com.tft.potato.common.entity.CommonEntity;
-import com.tft.potato.config.security.dto.OAuthAttributes;
+import com.tft.potato.common.entity.BaseTimeStampEntity;
 import com.tft.potato.rest.user.dto.UserRole;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
@@ -19,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 @DynamicUpdate
 @EqualsAndHashCode
 @Table(name = "\"user\"")
-public class User extends CommonEntity {
+public class User extends BaseTimeStampEntity {
 
     @Id
     @GenericGenerator(

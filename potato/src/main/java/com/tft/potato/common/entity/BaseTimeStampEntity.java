@@ -1,9 +1,7 @@
 package com.tft.potato.common.entity;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class CommonEntity {
+public abstract class BaseTimeStampEntity {
 
     @Column(name = "created_ts", nullable = false, length = 14)
     private Timestamp createdTs;

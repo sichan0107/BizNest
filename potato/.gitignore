@@ -37,3 +37,6 @@ application-oauth.yaml
 
 # log file
 /logs
+
+# attached files
+!**/src/main/resources/upload/

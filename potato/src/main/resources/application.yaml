@@ -14,6 +14,14 @@ spring:
   profiles:
     include: oauth #application-oauth.yaml
     active: local
+  servlet:
+    multipart: # 파일 첨부의 크기
+      max-file-size: 20MB
+      max-request-size: 20MB
+      # JVM의 기본 임시디렉토리에 권한이 없어서 일단 여기로 설정
+      # 기본 임시디렉토리는 System.out.println(System.getProperty("java.io.tmpdir"));
+      location: C:\github_potato\potato\src\main\resources\upload\temp_images
+
   jpa:
     database: postgresql
     show-sql: true
@@ -39,6 +47,11 @@ spring:
         order_updates: true
     generate-ddl: false
 
+
+file:
+  upload:
+    #images-dir: ./uploads/images #프로젝트의 루크 디렉토리 및 ex) /Users/developer/project/uploads
+    images-dir: C:\github_potato\potato\src\main\resources\upload\images # linux에서는 \ 대신 /를 쓴다.
 
 
 
