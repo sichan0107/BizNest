@@ -11,7 +11,12 @@ public class SkipPathList {
         return Arrays.asList(
 
                 // welcome page
-                "/main"
+                "/index.html"
+
+                // socket chat
+                ,"/ws/**"                      // 웹소켓 엔드포인트
+                ,"/topic/**"                   // 메세지 브로커 경로
+                ,"/app/**"                     // 클라이언트에서 서버로 메시지를 보낼 경로
 
                 // login / logout
                 ,"/login"
@@ -38,7 +43,7 @@ public class SkipPathList {
 
                 // web static resources
 
-
+                ,"/static/**"
                 ,"/css/**"
                 ,"/js/**"
                 ,"/img/**"
